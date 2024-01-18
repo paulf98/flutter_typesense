@@ -16,12 +16,21 @@ class TSSearchView extends StatefulWidget {
 class _TSSearchViewState extends State<TSSearchView> {
   final TextEditingController _searchController = TextEditingController();
 
-  void _handleSearch() {
+  // store the result of the search
+  List<dynamic>? _searchResults;
+
+  void _handleSearch() async {
     // Implement what should happen when the search button is pressed
     print('Searching for: ${_searchController.text}');
 
     // access the controller of the stateful widget
-    widget.controller.searchCollection(_searchController.text);
+    var res = await widget.controller.searchCollection(_searchController.text);
+
+    setState(() {
+      _searchResults = res;
+    });
+
+    print('Search results: $_searchResults');
   }
 
   @override
@@ -51,7 +60,18 @@ class _TSSearchViewState extends State<TSSearchView> {
               onPressed: _handleSearch,
               child: Text('Search'),
             ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _searchResults?.length ?? 0,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(_searchResults![index]['company_name']),
+                  );
+                },
+              ),
+            ),
           ],
+          // show the result of the search
         ),
       ),
     );

@@ -14,10 +14,7 @@ class TSSearchController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> searchCollection(String query) async {
-    await _searchService.searchCollection(query);
-
-    // Important! Inform listeners a change has occurred.
-    notifyListeners();
+  Future<List<dynamic>> searchCollection(String query) async {
+    return await _searchService.searchCollection(query);
   }
 }
