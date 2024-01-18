@@ -19,7 +19,7 @@ class _TSSearchViewState extends State<TSSearchView> {
   // store the result of the search
   List<dynamic>? _searchResults;
 
-  void _handleSearch() async {
+  void _handleSearch(String query) async {
     // Implement what should happen when the search button is pressed
     print('Searching for: ${_searchController.text}');
 
@@ -45,6 +45,7 @@ class _TSSearchViewState extends State<TSSearchView> {
           children: <Widget>[
             TextField(
               controller: _searchController,
+              onSubmitted: _handleSearch,
               decoration: InputDecoration(
                 labelText: 'Search',
                 suffixIcon: IconButton(
@@ -57,7 +58,7 @@ class _TSSearchViewState extends State<TSSearchView> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _handleSearch,
+              onPressed: () => _handleSearch(_searchController.text),
               child: Text('Search'),
             ),
             Expanded(
