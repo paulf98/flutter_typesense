@@ -38,9 +38,10 @@ class TSSearchService {
     await collections.importDocs(client);
   }
 
-  Future<void> searchCollection() async {
+  Future<void> searchCollection(String q) async {
+    print('Searching collection for: $q');
     final searchParameters = {
-      'q': 'stark',
+      'q': q,
       'query_by': 'company_name',
       'filter_by': 'num_employees:>100',
       'sort_by': 'num_employees:desc'
