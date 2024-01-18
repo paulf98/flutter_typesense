@@ -25,9 +25,12 @@ class _TSSearchViewState extends State<TSSearchView> {
 
     // access the controller of the stateful widget
     var res = await widget.controller.searchCollection(_searchController.text);
+    var hits = res['hits'];
 
+    // map the documents inside the hits array to the list
+    hits = hits.map((e) => e['document']).toList();
     setState(() {
-      _searchResults = res;
+      _searchResults = hits;
     });
 
     print('Search results: $_searchResults');

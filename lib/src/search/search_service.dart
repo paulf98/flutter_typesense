@@ -38,7 +38,7 @@ class TSSearchService {
     await collections.importDocs(client);
   }
 
-  Future<List<dynamic>> searchCollection(String q) async {
+  Future<Map<String, dynamic>> searchCollection(String q) async {
     print('Searching collection for: $q');
     final searchParameters = {
       'q': q,
@@ -49,11 +49,6 @@ class TSSearchService {
     var res =
         await client.collection('companies').documents.search(searchParameters);
 
-    var hits = res['hits'];
-
-    // map the documents inside the hits array to the list
-    hits = hits.map((e) => e['document']).toList();
-
-    return hits;
+    return res;
   }
 }

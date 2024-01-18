@@ -14,7 +14,7 @@ class TSSearchController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<dynamic>> searchCollection(String query) async {
+  Future<Map<String, dynamic>> searchCollection(String query) async {
     return await _searchService.searchCollection(query);
   }
 }
