@@ -25,15 +25,24 @@ class _TSSearchViewState extends State<TSSearchView> {
 
     // access the controller of the stateful widget
     var res = await widget.controller.searchCollection(_searchController.text);
+    print(res);
+
     var hits = res['hits'];
 
     // map the documents inside the hits array to the list
-    hits = hits.map((e) => e['document']).toList();
+    hits = hits
+        .map((e) => {
+              'company_name': e['document']['company_name'],
+              'num_employees': e['document']['num_employees'],
+              'country': e['document']['country'],
+              'score': e['text_match_info']['score']
+            })
+        .toList();
     setState(() {
       _searchResults = hits;
     });
 
-    print('Search results: $_searchResults');
+    print(_searchResults);
   }
 
   @override
@@ -70,6 +79,7 @@ class _TSSearchViewState extends State<TSSearchView> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(_searchResults![index]['company_name']),
+                    subtitle: Text("Score: " + _searchResults![index]['score']),
                   );
                 },
               ),
