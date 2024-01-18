@@ -20,9 +20,6 @@ class _TSSearchViewState extends State<TSSearchView> {
   List<dynamic>? _searchResults;
 
   void _handleSearch(String query) async {
-    // Implement what should happen when the search button is pressed
-    print('Searching for: ${_searchController.text}');
-
     // access the controller of the stateful widget
     var res = await widget.controller.searchCollection(_searchController.text);
     print(res);
