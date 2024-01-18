@@ -43,8 +43,8 @@ class TSSearchService {
     final searchParameters = {
       'q': q,
       'query_by': 'company_name',
-      'filter_by': 'num_employees:>100',
-      'sort_by': 'num_employees:desc'
+      'filter_by': 'location: (49.1996961,7.6087847, 10 km)',
+      'sort_by': 'location(49.1996961, 7.6087847):asc'
     };
     var res =
         await client.collection('companies').documents.search(searchParameters);

@@ -35,7 +35,8 @@ class _TSSearchViewState extends State<TSSearchView> {
               'company_name': e['document']['company_name'],
               'num_employees': e['document']['num_employees'],
               'country': e['document']['country'],
-              'score': e['text_match_info']['score']
+              'score': e['text_match_info']['score'],
+              'distance': e['geo_distance_meters']['location']
             })
         .toList();
     setState(() {
@@ -80,6 +81,8 @@ class _TSSearchViewState extends State<TSSearchView> {
                   return ListTile(
                     title: Text(_searchResults![index]['company_name']),
                     subtitle: Text("Score: " + _searchResults![index]['score']),
+                    trailing: Text(
+                        _searchResults![index]['distance'].toString() + "m"),
                   );
                 },
               ),

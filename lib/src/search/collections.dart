@@ -19,25 +19,29 @@ final _demoDocs = [
     'id': '124',
     'company_name': 'Stark Industries',
     'num_employees': 5215,
-    'country': 'USA'
+    'country': 'USA',
+    'location': [49.1996961, 7.6087847] // PS
   },
   {
     'id': '125',
     'company_name': 'Acme Corp',
     'num_employees': 1002,
-    'country': 'France'
+    'country': 'France',
+    'location': [49.1996961, 7.6087847] // PS
   },
   {
     'id': '127',
     'company_name': 'Stark Corp',
     'num_employees': 1031,
-    'country': 'USA'
+    'country': 'USA',
+    'location': [49.1711784, 7.6545316] // Lemberg
   },
   {
     'id': '126',
     'company_name': 'Doofenshmirtz Inc',
     'num_employees': 2,
-    'country': 'Tri-State Area'
+    'country': 'Tri-State Area',
+    'location': [49.1711784, 7.6545316] // Lemberg
   }
 ];
 
@@ -61,6 +65,7 @@ Future<void> create(Client client, [Schema? schema]) async {
         {
           Field('company_name', type: Type.string),
           Field('num_employees', type: Type.int32),
+          Field('location', type: Type.geopoint),
           Field('country', type: Type.string, isFacetable: true),
         },
         defaultSortingField: Field('num_employees', type: Type.int32),
