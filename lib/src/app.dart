@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_typesense/src/search/search_controller.dart';
+import 'package:flutter_typesense/src/search/search_view.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
 import 'sample_feature/sample_item_list_view.dart';
@@ -9,12 +11,14 @@ import 'settings/settings_view.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
-  const MyApp({
-    super.key,
-    required this.settingsController,
-  });
+  const MyApp(
+      {super.key,
+      required this.settingsController,
+      required this.searchController});
 
   final SettingsController settingsController;
+
+  final TSSearchController searchController;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +76,8 @@ class MyApp extends StatelessWidget {
                   case SampleItemDetailsView.routeName:
                     return const SampleItemDetailsView();
                   case SampleItemListView.routeName:
+                  case TSSearchView.routeName:
+                    return TSSearchView(controller: searchController);
                   default:
                     return const SampleItemListView();
                 }
