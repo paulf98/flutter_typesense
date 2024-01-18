@@ -12,8 +12,6 @@ void main() async {
   final settingsController = SettingsController(SettingsService());
   final searchController = TSSearchController(TSSearchService());
 
-  await searchController.init();
-
   // Load the user's preferred theme while the splash screen is displayed.
   // This prevents a sudden theme change when the app is first displayed.
   await settingsController.loadSettings();
@@ -25,4 +23,7 @@ void main() async {
     settingsController: settingsController,
     searchController: searchController,
   ));
+
+  // needs to come after runApp was called
+  await searchController.init();
 }

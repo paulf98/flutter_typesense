@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
 import 'package:typesense/typesense.dart';
 import 'package:logging/logging.dart';
 
@@ -14,39 +17,21 @@ Future<void> runExample(Client client) async {
   await delete(client);
 }
 
-final _demoDocs = [
-  {
-    'id': '124',
-    'company_name': 'Stark Industries',
-    'num_employees': 5215,
-    'country': 'USA',
-    'location': [49.1996961, 7.6087847] // PS
-  },
-  {
-    'id': '125',
-    'company_name': 'Acme Corp',
-    'num_employees': 1002,
-    'country': 'France',
-    'location': [49.1996961, 7.6087847] // PS
-  },
-  {
-    'id': '127',
-    'company_name': 'Stark Corp',
-    'num_employees': 1031,
-    'country': 'USA',
-    'location': [49.1711784, 7.6545316] // Lemberg
-  },
-  {
-    'id': '126',
-    'company_name': 'Doofenshmirtz Inc',
-    'num_employees': 2,
-    'country': 'Tri-State Area',
-    'location': [49.1711784, 7.6545316] // Lemberg
-  }
-];
+Future<dynamic> readJson() async {
+  final String response = await rootBundle.loadString('./data.jsonl');
+  final data = await json.decode(response);
+  // need to convert the data to make it work with the typesense client import
+  final List<Map<String, dynamic>> result = [
+    ...data["items"].map((e) => e as Map<String, dynamic>)
+  ];
+  return result;
+}
 
 Future<void> importDocs(Client client) async {
   try {
+    final _demoDocs = await readJson();
+    logInfoln(log, _demoDocs.toString());
+
     logInfoln(log, 'Importing documents into "companies" collection.');
     log.fine(
       await client.collection('companies').documents.importDocuments(_demoDocs),
@@ -67,6 +52,7 @@ Future<void> create(Client client, [Schema? schema]) async {
           Field('num_employees', type: Type.int32),
           Field('location', type: Type.geopoint),
           Field('country', type: Type.string, isFacetable: true),
+          // Field('vec', type: Type.float, isMultivalued: true, dimensions: 4),
         },
         defaultSortingField: Field('num_employees', type: Type.int32),
       ),
