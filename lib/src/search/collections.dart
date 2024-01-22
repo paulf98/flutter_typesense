@@ -18,7 +18,7 @@ Future<void> runExample(Client client) async {
 }
 
 Future<dynamic> readJson() async {
-  final String response = await rootBundle.loadString('./data.jsonl');
+  final String response = await rootBundle.loadString('/data.jsonl');
   final data = await json.decode(response);
   // need to convert the data to make it work with the typesense client import
   final List<Map<String, dynamic>> result = [
@@ -40,6 +40,7 @@ Future<void> importDocs(Client client) async {
   } on RequestException catch (e, stackTrace) {
     log.severe(e.message, e, stackTrace);
   } catch (e, stackTrace) {
+    log.severe((e as dynamic).importResults, stackTrace);
     log.severe(e, stackTrace);
   }
 }
@@ -52,7 +53,8 @@ Future<void> create(Client client, [Schema? schema]) async {
           Field('num_employees', type: Type.int32),
           Field('location', type: Type.geopoint),
           Field('country', type: Type.string, isFacetable: true),
-          // Field('vec', type: Type.float, isMultivalued: true, dimensions: 4),
+          Field('company_name_embedding',
+              type: Type.float, isMultivalued: true, dimensions: 768),
         },
         defaultSortingField: Field('num_employees', type: Type.int32),
       ),
