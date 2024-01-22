@@ -30,7 +30,7 @@ Future<dynamic> readJson() async {
 Future<void> importDocs(Client client) async {
   try {
     final _demoDocs = await readJson();
-    logInfoln(log, _demoDocs.toString());
+    // logInfoln(log, _demoDocs.toString());
 
     logInfoln(log, 'Importing documents into "companies" collection.');
     log.fine(

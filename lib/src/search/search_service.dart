@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:typesense/typesense.dart';
 import 'package:logging/logging.dart';
+import 'package:http/http.dart' as http;
 
 import 'collections.dart' as collections;
 
@@ -40,15 +43,37 @@ class TSSearchService {
 
   Future<Map<String, dynamic>> searchCollection(String q) async {
     print('Searching collection for: $q');
-    final searchParameters = {
-      'q': q,
-      'query_by': 'company_name',
-      'filter_by': 'location: (49.1996961,7.6087847, 10 km)',
-      'sort_by': 'location(49.1996961, 7.6087847):asc'
-    };
-    var res =
-        await client.collection('companies').documents.search(searchParameters);
 
+    Uri url = Uri.parse('http://127.0.0.1:5000/get-embedding');
+    var body = json.encode({
+      'text': q,
+    });
+
+    print('Body: $body');
+
+    var response = await http.post(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: body,
+    );
+
+    final embedding = json.decode(response.body)[0];
+
+    final searchRequests = {
+      'searches': [
+        {
+          "collection": "companies",
+          "q": '*',
+          'vector_query':
+              'company_name_embedding:(' + embedding.toString() + ', k:100)',
+        }
+      ]
+    };
+
+    var res = await client.multiSearch.perform(searchRequests);
     return res;
   }
 }
