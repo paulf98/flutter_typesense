@@ -42,49 +42,52 @@ class _TSSearchViewState extends State<TSSearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search Demo'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _searchController,
-              onSubmitted: _handleSearch,
-              decoration: InputDecoration(
-                labelText: 'Search',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    _searchController.clear();
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _handleSearch(_searchController.text),
-              child: const Text('Search'),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _searchResults?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(_searchResults![index]['company_name']),
-                    subtitle: Text("Vec Dist: " +
-                        _searchResults![index]['vector_distance'].toString()),
-                    // trailing: Text(
-                    //     _searchResults![index]['distance'].toString() + "m"),
-                  );
-                },
-              ),
-            ),
-          ],
-          // show the result of the search
+        appBar: AppBar(
+          title: const Text('Search Demo'),
         ),
-      ),
-    );
+        body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+                child: Container(
+              alignment: Alignment.topCenter,
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    controller: _searchController,
+                    onSubmitted: _handleSearch,
+                    decoration: InputDecoration(
+                      labelText: 'Search',
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _searchController.clear();
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () => _handleSearch(_searchController.text),
+                    child: const Text('Search'),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _searchResults?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(_searchResults![index]['company_name']),
+                          subtitle: Text("Vec Dist: " +
+                              _searchResults![index]['vector_distance']
+                                  .toString()),
+                          // trailing: Text(
+                          //     _searchResults![index]['distance'].toString() + "m"),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ))));
   }
 }
